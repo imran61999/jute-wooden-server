@@ -29,12 +29,29 @@ async function run() {
 
     const userCollection = client.db('juteDB').collection('user');
     const craftCollection = client.db('juteDB').collection('craft');
+    const categoryCollection = client.db('juteDB').collection('mainCategory');
 
-    // craft related api
+    // mainCategory related api
+    app.get('/category', async(req, res) =>{
+      const cursor = categoryCollection.find();
+      const category = await cursor.toArray();
+      res.send(category);
+    })
+
+    // craft subCategory related api
     app.get('/craft', async(req, res)=>{
       const cursor = craftCollection.find();
       const crafts = await cursor.toArray();
       res.send(crafts);
+    })
+
+    app.get('/craft/:email', async(req, res) =>{
+      const email = req.params.email;
+      const query = { user_email: email };
+      console.log(email)
+      const result = await craftCollection.find(query).toArray();
+      console.log(result)
+      res.send(result)
     })
     app.post('/craft', async(req, res) =>{
       const craft = req.body;
