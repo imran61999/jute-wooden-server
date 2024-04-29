@@ -31,6 +31,11 @@ async function run() {
     const craftCollection = client.db('juteDB').collection('craft');
 
     // craft related api
+    app.get('/craft', async(req, res)=>{
+      const cursor = craftCollection.find();
+      const crafts = await cursor.toArray();
+      res.send(crafts);
+    })
     app.post('/craft', async(req, res) =>{
       const craft = req.body;
       const result = await craftCollection.insertOne(craft);
