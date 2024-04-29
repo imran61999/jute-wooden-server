@@ -9,10 +9,6 @@ const port = process.env.PORT || 5000;
 app.use(cors())
 app.use(express.json())
 
-console.log(process.env.DB_PASS)
-
-// emran
-// wMg7Ij3aprLkn4v0
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.niwwhqe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -32,7 +28,14 @@ async function run() {
     await client.connect();
 
     const userCollection = client.db('juteDB').collection('user');
+    const craftCollection = client.db('juteDB').collection('craft');
 
+    // craft related api
+    app.post('/craft', async(req, res) =>{
+      const craft = req.body;
+      const result = await craftCollection.insertOne(craft);
+      res.send(result);
+    })
 
     // user related api
     app.get('/user', async(req, res) =>{
