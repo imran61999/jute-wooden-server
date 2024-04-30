@@ -44,6 +44,12 @@ async function run() {
       const crafts = await cursor.toArray();
       res.send(crafts);
     })
+    app.get('/craft/idx/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await craftCollection.findOne(query);
+      res.send(result);
+    })
 
     // read for update
     app.get('/craft/update/:id', async(req, res)=>{
@@ -84,7 +90,15 @@ async function run() {
     app.get('/craft/:email', async(req, res) =>{
       const email = req.params.email;
       const query = { user_email: email };
-      console.log(email)
+      // console.log(email)
+      const result = await craftCollection.find(query).toArray();
+      // console.log(result)
+      res.send(result)
+    })
+    app.get('/craft/sub/cat/:subcategory_Name', async(req, res) =>{
+      const subcategory_Name = req.params.subcategory_Name;
+      const query = { subcategory_Name: subcategory_Name };
+      console.log(subcategory_Name)
       const result = await craftCollection.find(query).toArray();
       console.log(result)
       res.send(result)
